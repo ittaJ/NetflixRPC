@@ -1,0 +1,33 @@
+{
+
+  "name": "Netflix Discord RPC",
+  "version": "1.0",
+  "description": "A Discord RPC made for Netflix",
+  "permissions": [
+    "storage",
+    "background",
+    "tabs",
+    "activeTab",
+    "https://www.netflix.com/*",
+    "http://www.netflix.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.netflix.com/watch/*"
+      ],
+      "js": [
+        "src/extension/getdata.js"
+      ],
+      "run_at": "document_end"
+    }
+    ],
+
+  "background": {
+    "scripts": ["src/extension/background.js"]
+  },
+
+  "manifest_version": 2
+
+
+}
