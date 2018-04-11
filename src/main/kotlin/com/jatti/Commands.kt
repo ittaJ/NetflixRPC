@@ -9,11 +9,21 @@ class Commands {
         val rpc = DiscordRichPresence()
         rpc.largeImageKey = "netflix_logo"
         if (data.action == "watch") {
-            rpc.details = data.title
-            rpc.largeImageText = "${data.season}:${data.episode}"
-            rpc.state = "${data.episodeName}"
+            if (data.season != "") {
+                rpc.details = data.title
+                rpc.largeImageText = "${data.season}:${data.episode}"
+                rpc.state = data.episodeName
+            } else {
+                rpc.details = "Watching"
+                rpc.state = data.title
+            }
         } else {
-            rpc.details = data.action
+            rpc.details = "Browsing"
+            if (data.browseWhat.isNullOrEmpty()) {
+                rpc.state = "In Home"
+            } else if (data.browseWhat!! == "mylist") {
+                rpc.state = "In My List"
+            }
         }
         DiscordRPC.discordUpdatePresence(rpc)
     }

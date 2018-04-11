@@ -8,4 +8,8 @@ Now create new folder in which you'll unzip that .crx file and go to your Google
 ### Some pictures!
 ![](https://i.imgur.com/jYbXzUW.png)
 
-![](https://i.imgur.com/UGbf8av.png)
+![](https://i.imgur.com/qqmRxM4.png)
+
+![](https://i.imgur.com/DtNQmBw.png)
+
+![](https://i.imgur.com/p9Vw5gw.png)
