@@ -7,14 +7,14 @@ let data = {
 
 };
 
-chrome.runtime.onInstalled.addListener(function () {
+browser.runtime.onInstalled.addListener(function () {
 
     console.log("Enabled Netflix RPC");
 
 });
 
 
-chrome.tabs.onUpdated.addListener(function (integer, object, Tab) {
+browser.tabs.onUpdated.addListener(function (integer, object, Tab) {
 
     let url = Tab.url;
     let splittedUrl = url.split("/");
@@ -34,7 +34,7 @@ chrome.tabs.onUpdated.addListener(function (integer, object, Tab) {
 
                 const browseMyList = {
                     "action": "browse",
-                    "browseWhat": "mylist"
+                    "what": "mylist"
                 };
 
                 const socket = new WebSocket("ws://127.0.0.1:6673/");
@@ -45,7 +45,8 @@ chrome.tabs.onUpdated.addListener(function (integer, object, Tab) {
             } else {
 
                 const browse = {
-                    "action": "browse"
+                    "action": "browse",
+                    "what": "home"
                 };
 
                 const socket = new WebSocket("ws://127.0.0.1:6673/");
@@ -60,6 +61,7 @@ chrome.tabs.onUpdated.addListener(function (integer, object, Tab) {
 
                 const watch = {
                     "action": "watch",
+                    "what": "series",
                     "title": data.title,
                     "season": data.season,
                     "episode": data.episode,
@@ -75,6 +77,7 @@ chrome.tabs.onUpdated.addListener(function (integer, object, Tab) {
 
                 const watch = {
                     "action": "watch",
+                    "what": "movie",
                     "title": data.title
                 };
 
@@ -93,7 +96,7 @@ chrome.tabs.onUpdated.addListener(function (integer, object, Tab) {
     }
 });
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
     if (typeof request.type !== "string") {
 

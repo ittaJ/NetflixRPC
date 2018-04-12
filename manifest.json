@@ -3,6 +3,7 @@
   "name": "Netflix Discord RPC",
   "version": "1.0",
   "description": "A Discord RPC made for Netflix",
+  "author": "Jatti",
   "permissions": [
     "storage",
     "background",
@@ -24,6 +25,7 @@
     ],
 
   "background": {
+    "persistent": false,
     "scripts": ["src/extension/background.js"]
   },
 

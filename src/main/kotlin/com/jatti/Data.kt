@@ -6,5 +6,5 @@ data class Data (
         var season: String? = null,
         var episode: String? = null,
         var episodeName: String? = null,
-        var browseWhat: String? = null
+        var what: String? = null
 )

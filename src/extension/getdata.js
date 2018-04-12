@@ -9,7 +9,7 @@ const timer = setInterval(function () {
         if (document.getElementsByClassName("ellipsize-text")[0].getElementsByTagName("h4")[0] === undefined) {
             const movieTitle = document.getElementsByClassName("ellipsize-text")[0].textContent;
 
-            chrome.runtime.sendMessage({
+            browser.runtime.sendMessage({
                 type: "send_movie_data",
                 "movieTitle": movieTitle
             });
@@ -21,7 +21,7 @@ const timer = setInterval(function () {
             const season = document.getElementsByClassName("ellipsize-text")[0].getElementsByTagName("span")[0].textContent.split(':')[0];
             const episode = document.getElementsByClassName("ellipsize-text")[0].getElementsByTagName("span")[0].textContent.split(':')[1];
 
-            chrome.runtime.sendMessage({
+            browser.runtime.sendMessage({
                 type: "send_series_data",
                 "series": seriesTitle,
                 "episodeName": episodeName,
