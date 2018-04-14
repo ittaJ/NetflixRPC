@@ -7,26 +7,39 @@ let data = {
 
 };
 
-browser.runtime.onInstalled.addListener(function () {
+chrome.runtime.onInstalled.addListener(function () {
 
     console.log("Enabled Netflix RPC");
 
 });
 
 
-browser.tabs.onUpdated.addListener(function (integer, object, Tab) {
+chrome.tabs.onUpdated.addListener(function (integer, object, Tab) {
+
+    function sendData(toSend) {
+        const socket = new WebSocket("ws://127.0.0.1:6673/");
+        socket.onopen = function (event) {
+            socket.send(JSON.stringify(toSend))
+        }
+    }
 
     let url = Tab.url;
     let splittedUrl = url.split("/");
-
-    if (url.toString().startsWith("chrome")) {
-        return;
-    }
 
     if (Tab.title === "Netflix") {
 
         let whatDoing = splittedUrl[3];
 
+        if (whatDoing === "Kids") {
+
+            const browseKids = {
+                "action": "browse",
+                "what": "kids"
+            };
+
+            sendData(browseKids);
+
+        }
 
         if (whatDoing === "browse") {
 
@@ -37,29 +50,23 @@ browser.tabs.onUpdated.addListener(function (integer, object, Tab) {
                     "what": "mylist"
                 };
 
-                const socket = new WebSocket("ws://127.0.0.1:6673/");
-                socket.onopen = function (event) {
-                    socket.send(JSON.stringify(browseMyList));
-                };
+                sendData(browseMyList);
 
             } else {
 
-                const browse = {
+                const browseHome = {
                     "action": "browse",
                     "what": "home"
                 };
 
-                const socket = new WebSocket("ws://127.0.0.1:6673/");
-                socket.onopen = function (event) {
-                    socket.send(JSON.stringify(browse));
-                };
+                sendData(browseHome);
             }
         }
         if (whatDoing === "watch") {
 
             if (data.season !== "") {
 
-                const watch = {
+                const watchSeries = {
                     "action": "watch",
                     "what": "series",
                     "title": data.title,
@@ -68,23 +75,17 @@ browser.tabs.onUpdated.addListener(function (integer, object, Tab) {
                     "episodeName": data.episodeName
                 };
 
-                const socket = new WebSocket("ws://127.0.0.1:6673/");
-                socket.onopen = function (event) {
-                    socket.send(JSON.stringify(watch))
-                };
+                sendData(watchSeries);
 
             } else {
 
-                const watch = {
+                const watchMovie = {
                     "action": "watch",
                     "what": "movie",
                     "title": data.title
                 };
 
-                const socket = new WebSocket("ws://127.0.0.1:6673/");
-                socket.onopen = function (event) {
-                    socket.send(JSON.stringify(watch))
-                };
+                sendData(watchMovie);
             }
 
         }
@@ -96,7 +97,7 @@ browser.tabs.onUpdated.addListener(function (integer, object, Tab) {
     }
 });
 
-browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
     if (typeof request.type !== "string") {
 
@@ -119,9 +120,6 @@ browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             case "send_movie_data":
 
                 data.title = request["movieTitle"];
-                data.season = "";
-                data.episodeName = "";
-                data.episode = "";
 
                 break;
         }

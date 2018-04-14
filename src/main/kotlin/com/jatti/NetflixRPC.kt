@@ -11,7 +11,7 @@ import java.time.Duration
 fun main(args: Array<String>) {
     embeddedServer(Netty, 6673) {
         install(WebSockets) {
-            pingPeriod = Duration.ofSeconds(30)
+            pingPeriod = Duration.ofSeconds(200)
         }
         install(Routing) {
             webSocket("/") {
@@ -22,6 +22,7 @@ fun main(args: Array<String>) {
                         val text = frame.readText()
                         val gson = Gson()
                         val jsonData = gson.fromJson(text, Data::class.java)
+
                         if(DiscordRPCConnection.thread == null) {
                             DiscordRPCConnection(jsonData)
                         } else {

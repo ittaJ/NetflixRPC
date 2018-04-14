@@ -4,7 +4,7 @@ import net.arikia.dev.drpc.DiscordEventHandlers
 import net.arikia.dev.drpc.DiscordRPC
 import net.arikia.dev.drpc.callbacks.ReadyCallback
 
-class DiscordRPCConnection(val text: Data): ReadyCallback {
+class DiscordRPCConnection(private val text: Data): ReadyCallback {
 
     companion object {
          var thread: Thread? = null

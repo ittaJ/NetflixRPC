@@ -41,6 +41,10 @@ class Commands {
                     rpc.state = "In My List"
                 }
 
+                "kids" -> {
+                    rpc.state = "In Kids"
+                }
+
             }
 
         }
