@@ -1,5 +1,6 @@
 let data = {
 
+    type: "",
     title: "",
     season: "",
     episode: "",
@@ -41,6 +42,17 @@ chrome.tabs.onUpdated.addListener(function (integer, object, Tab) {
 
         }
 
+/**        if (whatDoing.startsWith("browse?")) {
+
+            const browseTitle = {
+                "action": "browse",
+                "what": "title",
+                "title": data.title
+            };
+
+            //sendData(browseTitle);
+        }*/
+
         if (whatDoing === "browse") {
 
             if (splittedUrl[4] !== "" && splittedUrl[4] === "my-list") {
@@ -64,35 +76,47 @@ chrome.tabs.onUpdated.addListener(function (integer, object, Tab) {
         }
         if (whatDoing === "watch") {
 
-            if (data.season !== "") {
+            switch (data.type) {
 
-                const watchSeries = {
-                    "action": "watch",
-                    "what": "series",
-                    "title": data.title,
-                    "season": data.season,
-                    "episode": data.episode,
-                    "episodeName": data.episodeName
-                };
 
-                sendData(watchSeries);
+                case "series":
+                    const watchSeries = {
+                        "action": "watch",
+                        "what": data.type,
+                        "title": data.title,
+                        "season": data.season,
+                        "episode": data.episode,
+                        "episodeName": data.episodeName
+                    };
 
-            } else {
+                    sendData(watchSeries);
 
-                const watchMovie = {
-                    "action": "watch",
-                    "what": "movie",
-                    "title": data.title
-                };
+                    data.title = "";
+                    data.episode = "";
+                    data.episodeName = "";
+                    data.season = "";
+                    data.type = "";
+                    break;
 
-                sendData(watchMovie);
+
+                case "movie":
+                    const watchMovie = {
+                        "action": "watch",
+                        "what": data.type,
+                        "title": data.title
+                    };
+
+                    sendData(watchMovie);
+
+                    data.title = "";
+                    data.episode = "";
+                    data.episodeName = "";
+                    data.season = "";
+                    data.type = "";
+                    break;
+
             }
-
         }
-
-    } else {
-
-        return;
 
     }
 });
@@ -110,6 +134,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
             case "send_series_data":
 
+                data.type = "series";
                 data.title = request["series"];
                 data.season = request["season"];
                 data.episodeName = request["episodeName"];
@@ -119,6 +144,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
             case "send_movie_data":
 
+                data.type = "movie";
                 data.title = request["movieTitle"];
 
                 break;

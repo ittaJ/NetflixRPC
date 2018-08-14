@@ -18,7 +18,7 @@
         "https://www.netflix.com/watch/*"
       ],
       "js": [
-        "src/extension/getdata.js"
+        "src/com.jatti/extension/getdata.js"
       ],
       "run_at": "document_end"
     }
@@ -26,10 +26,9 @@
 
   "background": {
     "persistent": false,
-    "scripts": ["src/extension/background.js"]
+    "scripts": ["src/com.jatti/extension/background.js"]
   },
 
   "manifest_version": 2
-
 
 }
